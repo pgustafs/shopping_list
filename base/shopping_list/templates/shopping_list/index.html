@@ -1,0 +1,23 @@
+<!-- shopping_list/templates/index.html -->
+{% extends 'shopping_list/base.html' %}
+
+<!-- <div class="container">
+    <h1>Shopping List</h1>
+    <ul>
+        {% for category in categories %}
+            <li>
+                <h2>{{ category.name }}</h2>
+                <ul>
+                    {% for item in category.items.all %}
+                        <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_item' %}">Add Item</a>
+    <a href="{% url 'add_category' %}">Add Category</a>
+</div> -->   
+{% block content %}
+
+{% endblock %}

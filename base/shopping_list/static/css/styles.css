@@ -1,0 +1,28 @@
+/* shopping_list/static/css/styles.css */
+.dropdown-menu .dropdown-menu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-top: -1px;
+}
+
+.fixed-bottom {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    border-top: 1px solid #ddd; /* Light border at the top */
+}
+
+.fixed-bottom .btn {
+    height: 60px; /* Ensure buttons have the same height */
+    margin: 0.5em 0; /* Ensure there's some space between buttons */
+}
+
+.same-size-btn {
+    height: 60px; /* Set a fixed height for uniformity */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-done {
+    background-color: #d4edda; /* Light green background */
+}

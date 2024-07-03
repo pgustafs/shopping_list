@@ -1,0 +1,22 @@
+<!-- shopping_list/templates/shopping_list/all_items.html -->
+{% extends 'shopping_list/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>All Shopping Items</h1>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for item in items %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">Quantity: {{ item.quantity }}</p>
+                    <p class="card-text">Category: <strong>{{ item.category.name }}</strong></p>
+                    <a href="{% url 'item_detail' item.pk %}" class="btn btn-primary mt-2">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
