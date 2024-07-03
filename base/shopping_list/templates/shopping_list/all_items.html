@@ -2,7 +2,7 @@
 {% extends 'shopping_list/base.html' %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4" style="margin-bottom: 100px;">
     <h1>All Shopping Items</h1>
     <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for item in items %}
@@ -10,13 +10,22 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">{{ item.name }}</h5>
-                    <p class="card-text">Quantity: {{ item.quantity }}</p>
                     <p class="card-text">Category: <strong>{{ item.category.name }}</strong></p>
-                    <a href="{% url 'item_detail' item.pk %}" class="btn btn-primary mt-2">View Details</a>
+                    <a href="{% url 'item_detail_from_all' item.pk %}" class="btn btn-primary mt-2">View Details</a>
                 </div>
             </div>
         </div>
         {% endfor %}
+    </div>
+    <!-- Fixed button row -->
+    <div class="fixed-bottom bg-light py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <a href="{% url 'add_item_from_all' %}" class="btn btn-success btn-lg w-100">Add New Item</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

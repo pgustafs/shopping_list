@@ -1,12 +1,17 @@
 from django import forms
-from .models import Item, Category
+from .models import Item, Category, HouseholdItem
 
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['name', 'quantity', 'category']
+        fields = ['name', 'category']
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ['name', 'description']
+
+class HouseholdItemForm(forms.ModelForm):
+    class Meta:
+        model = HouseholdItem
+        fields = ['item', 'quantity']

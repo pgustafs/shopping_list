@@ -1,0 +1,11 @@
+<!-- shopping_list/templates/shopping_list/item_detail_from_household.html -->
+{% extends 'shopping_list/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ item.name }}</h1>
+    <p>Category: {{ item.category.name }}</p>
+    <p>Description: {{ item.description }}</p> <!-- Assuming there's a description field, if not remove this line -->
+    <a href="{% url 'household_detail' household.slug %}" class="btn btn-secondary">Back to Household</a>
+</div>
+{% endblock %}

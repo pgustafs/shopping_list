@@ -1,0 +1,14 @@
+<!-- shopping_list/templates/shopping_list/add_item_from_all.html -->
+{% extends 'shopping_list/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Add New Item</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Item</button>
+        <a href="{% url 'all_items' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

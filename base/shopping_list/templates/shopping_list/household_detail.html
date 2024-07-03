@@ -2,64 +2,27 @@
 {% extends 'shopping_list/base.html' %}
 
 {% block content %}
-<!-- <div class="container">
-    <h1>{{ household.name }}</h1>
-    <h2>Shopping Items</h2>
-    <ul>
-        {% for item in items %}
-        <li>{{ item.name }} ({{ item.quantity }}) - <strong>{{ item.category.name }}</strong></li>
-        {% endfor %}
-    </ul>
-</div> -->
-<!-- <div class="container mt-4">
-    <h1>{{ household.name }}</h1>
-    <h2>Shopping Items</h2>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        {% for item in items %}
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.name }}</h5>
-                    <p class="card-text">Quantity: {{ item.quantity }}</p>
-                    <p class="card-text">Category: <strong>{{ item.category.name }}</strong></p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="items_to_delete" value="{{ item.id }}" id="item{{ item.id }}">
-                        <label class="form-check-label" for="item{{ item.id }}">
-                            Select to delete
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="fixed-bottom text-center mb-3">
-        <a href="{% url 'add_item' household.slug %}" class="btn btn-success btn-lg">Add New Item</a>
-        <button type="submit" class="btn btn-danger btn-lg">Delete Selected Items</button>
-        <a href="{% url 'clear_items' household.slug %}" class="btn btn-danger btn-lg">Clear All Items</a>
-    </div>
-</div> -->
-<div class="container mt-4">
+<div class="container mt-4" style="margin-bottom: 200px;">
     <h1>{{ household.name }}</h1>
     <h2>Shopping Items</h2>
     <form method="post" action="{% url 'delete_selected_items' household.slug %}">
         {% csrf_token %}
         <div class="row row-cols-1 row-cols-md-2 g-4">
-            {% for item in items %}
+            {% for household_item in household_items %}
             <div class="col">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-text">Quantity: {{ item.quantity }}</p>
-                        <!-- <p class="card-text">Category: <strong>{{ item.category.name }}</strong></p> -->
+                        <h5 class="card-title">{{ household_item.item.name }}</h5>
+                        <p class="card-text">Quantity: {{ household_item.quantity }}</p>
+                        <p class="card-text">Category: <strong>{{ household_item.item.category.name }}</strong></p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="items_to_delete" value="{{ item.id }}" id="item{{ item.id }}">
-                                <label class="form-check-label" for="item{{ item.id }}">
+                                <input class="form-check-input" type="checkbox" name="items_to_delete" value="{{ household_item.id }}" id="item{{ household_item.id }}">
+                                <label class="form-check-label" for="item{{ household_item.id }}">
                                     Select to delete
                                 </label>
                             </div>
-                            <a href="{% url 'item_detail' item.pk %}" class="btn btn-primary">View Details</a>
+                            <a href="{% url 'item_detail_from_household' household_item.item.pk household.slug %}" class="btn btn-primary">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -86,5 +49,4 @@
         </div>
     </form>
 </div>
-
 {% endblock %}

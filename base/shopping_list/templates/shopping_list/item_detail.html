@@ -4,9 +4,15 @@
 {% block content %}
 <div class="container mt-4">
     <h1>{{ item.name }}</h1>
-    <p>Quantity: {{ item.quantity }}</p>
     <p>Category: {{ item.category.name }}</p>
-    <p>Household: {{ item.household.name }}</p>
-    <a href="{% url 'household_detail' item.household.slug %}" class="btn btn-secondary">Back to Household</a>
+    <h2>Households</h2>
+    <ul>
+        {% for household_item in household_items %}
+        <li>
+            {{ household_item.household.name }}: {{ household_item.quantity }}
+            <a href="{% url 'household_detail' household_item.household.slug %}" class="btn btn-secondary btn-sm">Back to Household</a>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}

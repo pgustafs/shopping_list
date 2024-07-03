@@ -13,7 +13,7 @@
 
 .fixed-bottom .btn {
     height: 60px; /* Ensure buttons have the same height */
-    margin: 0.5em 0; /* Ensure there's some space between buttons */
+    /*margin: 0.5em 0;  Ensure there's some space between buttons */
 }
 
 .same-size-btn {
