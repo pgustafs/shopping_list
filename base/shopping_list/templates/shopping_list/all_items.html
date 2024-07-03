@@ -2,8 +2,23 @@
 {% extends 'shopping_list/base.html' %}
 
 {% block content %}
-<div class="container mt-4" style="margin-bottom: 100px;">
+<div class="container mt-4 mb-5" style="padding-bottom: 150px;"> <!-- Add larger padding-bottom here -->
     <h1>All Shopping Items</h1>
+    <div class="row mb-4">
+        <div class="col">
+            <form method="get" action="{% url 'all_items' %}">
+                <div class="input-group">
+                    <select class="form-select" name="category" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-outline-secondary" type="submit">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for item in items %}
         <div class="col">
@@ -17,13 +32,13 @@
         </div>
         {% endfor %}
     </div>
-    <!-- Fixed button row -->
-    <div class="fixed-bottom bg-light py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col text-center">
-                    <a href="{% url 'add_item_from_all' %}" class="btn btn-success btn-lg w-100">Add New Item</a>
-                </div>
+</div>
+<!-- Fixed button row -->
+<div class="fixed-bottom bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <a href="{% url 'add_item_from_all' %}" class="btn btn-success btn-lg w-100">Add New Item</a>
             </div>
         </div>
     </div>

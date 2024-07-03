@@ -13,8 +13,13 @@ def household_list(request):
 
 def household_detail(request, slug):
     household = get_object_or_404(Household, slug=slug)
-    household_items = household.household_items.select_related('item', 'item__category').all()
-    return render(request, 'shopping_list/household_detail.html', {'household': household, 'household_items': household_items})
+    category_id = request.GET.get('category')
+    if category_id:
+        household_items = household.household_items.filter(item__category_id=category_id).select_related('item', 'item__category').all()
+    else:
+        household_items = household.household_items.select_related('item', 'item__category').all()
+    categories = Category.objects.all()
+    return render(request, 'shopping_list/household_detail.html', {'household': household, 'household_items': household_items, 'categories': categories, 'selected_category': category_id})
 
 def add_item(request, slug):
     household = get_object_or_404(Household, slug=slug)
@@ -48,8 +53,13 @@ def item_detail_from_household(request, pk, slug):
 
 # Item views
 def all_items(request):
-    items = Item.objects.select_related('category').all()
-    return render(request, 'shopping_list/all_items.html', {'items': items})
+    category_id = request.GET.get('category')
+    if category_id:
+        items = Item.objects.filter(category_id=category_id).select_related('category').all()
+    else:
+        items = Item.objects.select_related('category').all()
+    categories = Category.objects.all()
+    return render(request, 'shopping_list/all_items.html', {'items': items, 'categories': categories, 'selected_category': category_id})
 
 def item_detail_from_all(request, pk):
     item = get_object_or_404(Item, pk=pk)
