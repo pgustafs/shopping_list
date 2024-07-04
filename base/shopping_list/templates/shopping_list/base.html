@@ -41,7 +41,7 @@
                             {% for household in households %}
                             <li><a class="dropdown-item" href="{% url 'household_detail' household.slug %}">{{ household.name }}</a></li>
                             {% endfor %}
-                            <li><a class="dropdown-item" href="#">Basic</a></li>
+                            <li><a class="dropdown-item" href="{% url 'add_household' %}">Add Household</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

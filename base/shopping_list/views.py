@@ -1,11 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404, redirect
 from .models import Household, Category, Item, HouseholdItem
-from .forms import ItemForm, CategoryForm, HouseholdItemForm
+from .forms import ItemForm, CategoryForm, HouseholdItemForm, HouseholdForm
 
 # Create your views here.
 
 def index(request):
     return render(request, 'shopping_list/index.html')
+
+def add_household(request):
+    if request.method == 'POST':
+        form = HouseholdForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('household_list')
+    else:
+        form = HouseholdForm()
+    return render(request, 'shopping_list/add_household.html', {'form': form})
 
 def household_list(request):
     households = Household.objects.all()

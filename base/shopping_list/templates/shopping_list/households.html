@@ -1,13 +1,21 @@
-<!-- myapp/templates/myapp/households.html -->
+<!-- shopping_list/templates/shopping_list/households.html -->
 {% extends 'shopping_list/base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <h1>Households</h1>
-    <ul>
+    <a href="{% url 'add_household' %}" class="btn btn-success mb-3">Add New Household</a>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for household in households %}
-        <li><a href="{% url 'household_detail' household.slug %}">{{ household.name }}</a></li>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ household.name }}</h5>
+                    <a href="{% url 'household_detail' household.slug %}" class="btn btn-primary mt-2">View Details</a>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 {% endblock %}

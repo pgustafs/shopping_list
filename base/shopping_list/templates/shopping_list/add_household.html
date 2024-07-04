@@ -1,0 +1,14 @@
+<!-- shopping_list/templates/shopping_list/add_household.html -->
+{% extends 'shopping_list/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Add New Household</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Household</button>
+        <a href="{% url 'household_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

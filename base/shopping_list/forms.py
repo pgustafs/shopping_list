@@ -1,5 +1,5 @@
 from django import forms
-from .models import Item, Category, HouseholdItem
+from .models import Item, Category, HouseholdItem, Household
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,8 @@ class HouseholdItemForm(forms.ModelForm):
     class Meta:
         model = HouseholdItem
         fields = ['item', 'quantity']
+
+class HouseholdForm(forms.ModelForm):
+    class Meta:
+        model = Household
+        fields = ['name', 'slug']
