@@ -28,6 +28,7 @@ def add_item(request, slug):
         if form.is_valid():
             household_item = form.save(commit=False)
             household_item.household = household
+            household_item.add_count += 1
             household_item.save()
             return redirect('household_detail', slug=slug)
     else:
@@ -50,6 +51,37 @@ def item_detail_from_household(request, pk, slug):
     item = get_object_or_404(Item, pk=pk)
     household = get_object_or_404(Household, slug=slug)
     return render(request, 'shopping_list/item_detail_from_household.html', {'item': item, 'household': household})
+
+def items_sorted_by_count(request, slug):
+    household = get_object_or_404(Household, slug=slug)
+    household_items = household.household_items.select_related('item', 'item__category').order_by('-add_count')
+
+    # Prepare data for the chart
+    categories = []
+    items_data = {}
+    for household_item in household_items:
+        category_name = household_item.item.category.name
+        item_name = household_item.item.name
+        add_count = household_item.add_count
+
+        if category_name not in categories:
+            categories.append(category_name)
+        
+        if item_name not in items_data:
+            items_data[item_name] = [0] * len(categories)
+        
+        items_data[item_name][categories.index(category_name)] = add_count
+
+    chart_data = {
+        'categories': categories,
+        'items': list(items_data.keys()),
+        'data': list(items_data.values())
+    }
+
+    return render(request, 'shopping_list/items_sorted_by_count.html', {
+        'household': household,
+        'chart_data': chart_data
+    })
 
 # Item views
 def all_items(request):

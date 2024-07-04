@@ -1,84 +1,83 @@
 import os
 import django
+import random
 
-# Set up the Django environment
+# Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base.settings')
 django.setup()
 
-from shopping_list.models import Household, Category, Item, HouseholdItem
+from shopping_list.models import Household, Item, Category, HouseholdItem
 
-def create_test_data():
-    # Create households
-    household1 = Household.objects.create(name="Household 1", slug="household-1")
-    household2 = Household.objects.create(name="Household 2", slug="household-2")
+# Define categories with descriptions
+categories_data = [
+    {"name": "Fruits", "description": "Apples, bananas,  grapes, oranges, strawberries, avocados, peaches, etc."},
+    {"name": "Vegetables", "description": "Potatoes, onions, carrots, salad greens, broccoli, peppers, tomatoes, cucumbers, etc."},
+    {"name": "Canned Goods", "description": "Soup, tuna, fruit, beans, vegetables, pasta sauce, etc."},
+    {"name": "Dairy", "description": "Butter, cheese, eggs, milk, yogurt, etc."},
+    {"name": "Meat", "description": "Chicken, beef, pork, sausage, bacon etc."},
+    {"name": "Fish & Seafood", "description": "Shrimp, crab, cod, tuna, salmon, etc."},
+    {"name": "Deli", "description": "Cheese, salami, ham, turkey, etc."},
+    {"name": "Condiments & Spices", "description": "Black pepper, oregano, cinnamon, sugar, olive oil, ketchup, mayonnaise, etc."},
+    {"name": "Snacks", "description": "Chips, pretzels, popcorn, crackers, nuts, etc."},
+    {"name": "Bread & Bakery", "description": "Bread, tortillas, pies, muffins, bagels, cookies, etc."},
+    {"name": "Beverages", "description": "Coffee, teabags, milk, juice, soda, beer, wine, etc."},
+    {"name": "Pasta, Rice & Cereal", "description": "Oats, granola, brown rice, white rice, macaroni, noodles, etc."},
+    {"name": "Baking", "description": "Flour, powdered sugar, baking powder, cocoa etc."},
+    {"name": "Frozen Foods", "description": "Pizza, fish, potatoes, ready meals, ice cream, etc."},
+    {"name": "Personal Care", "description": "Shampoo, conditioner, deodorant, toothpaste, dental floss, etc."},
+    {"name": "Health Care", "description": "Saline, band-aid, cleaning alcohol, pain killers, antacids, etc."},
+    {"name": "Household & Cleaning Supplies", "description": "Laundry detergent, dish soap, dishwashing liquid, paper towels, tissues, trash bags, aluminum foil, zip bags, etc."},
+    {"name": "Baby Items", "description": "Baby food, diapers, wet wipes, lotion, etc."},
+    {"name": "Pet Care", "description": "Pet food, kitty litter, chew toys, pet treats, pet shampoo, etc."},
+]
 
-    # Create categories
-    category_names = [
-        "Fruits", "Vegetables", "Canned Goods", "Dairy", "Meat", "Fish & Seafood",
-        "Deli", "Condiments & Spices", "Snacks", "Bread & Bakery", "Beverages",
-        "Pasta, Rice & Cereal", "Baking", "Frozen Foods", "Personal Care",
-        "Health Care", "Household & Cleaning Supplies", "Baby Items", "Pet Care"
-    ]
+# Create categories
+categories = {}
+for category_data in categories_data:
+    category, created = Category.objects.get_or_create(
+        name=category_data["name"], 
+        defaults={"description": category_data["description"]}
+    )
+    categories[category_data["name"]] = category
+
+# Create households
+household_names = ["Household 1", "Household 2", "Household 3"]
+households = []
+for name in household_names:
+    household, created = Household.objects.get_or_create(name=name, slug=name.lower().replace(" ", "-"))
+    households.append(household)
+
+# Define items with specific categories
+items_data = [
+    {"name": "Apple", "category": "Fruits"},
+    {"name": "Banana", "category": "Fruits"},
+    {"name": "Carrot", "category": "Vegetables"},
+    {"name": "Milk", "category": "Dairy"},
+    {"name": "Chicken", "category": "Meat"},
+    {"name": "Salmon", "category": "Fish & Seafood"},
+    {"name": "Ham", "category": "Deli"},
+    {"name": "Ketchup", "category": "Condiments & Spices"},
+    {"name": "Chips", "category": "Snacks"},
+    {"name": "Bread", "category": "Bread & Bakery"},
+    {"name": "Juice", "category": "Beverages"},
+    {"name": "Pasta", "category": "Pasta, Rice & Cereal"},
+    {"name": "Flour", "category": "Baking"},
+    {"name": "Ice Cream", "category": "Frozen Foods"},
+    {"name": "Shampoo", "category": "Personal Care"},
+    {"name": "Vitamins", "category": "Health Care"},
+    {"name": "Detergent", "category": "Household & Cleaning Supplies"},
+    {"name": "Diapers", "category": "Baby Items"},
+    {"name": "Dog Food", "category": "Pet Care"},
+]
+
+# Create items and household items with random counts
+for item_data in items_data:
+    category = categories[item_data["category"]]
+    item, created = Item.objects.get_or_create(name=item_data["name"], category=category)
     
-    categories = {}
-    for name in category_names:
-        categories[name] = Category.objects.create(name=name)
-    
-    # Create items
-    items = {
-        "Apple": categories["Fruits"],
-        "Banana": categories["Fruits"],
-        "Carrot": categories["Vegetables"],
-        "Tomato": categories["Vegetables"],
-        "Canned Beans": categories["Canned Goods"],
-        "Canned Corn": categories["Canned Goods"],
-        "Milk": categories["Dairy"],
-        "Cheese": categories["Dairy"],
-        "Chicken Breast": categories["Meat"],
-        "Ground Beef": categories["Meat"],
-        "Salmon": categories["Fish & Seafood"],
-        "Shrimp": categories["Fish & Seafood"],
-        "Ham": categories["Deli"],
-        "Turkey": categories["Deli"],
-        "Ketchup": categories["Condiments & Spices"],
-        "Salt": categories["Condiments & Spices"],
-        "Chips": categories["Snacks"],
-        "Cookies": categories["Snacks"],
-        "Bread": categories["Bread & Bakery"],
-        "Bagel": categories["Bread & Bakery"],
-        "Juice": categories["Beverages"],
-        "Soda": categories["Beverages"],
-        "Pasta": categories["Pasta, Rice & Cereal"],
-        "Rice": categories["Pasta, Rice & Cereal"],
-        "Flour": categories["Baking"],
-        "Sugar": categories["Baking"],
-        "Frozen Pizza": categories["Frozen Foods"],
-        "Ice Cream": categories["Frozen Foods"],
-        "Shampoo": categories["Personal Care"],
-        "Toothpaste": categories["Personal Care"],
-        "Aspirin": categories["Health Care"],
-        "Band-Aids": categories["Health Care"],
-        "Detergent": categories["Household & Cleaning Supplies"],
-        "Paper Towels": categories["Household & Cleaning Supplies"],
-        "Diapers": categories["Baby Items"],
-        "Baby Food": categories["Baby Items"],
-        "Dog Food": categories["Pet Care"],
-        "Cat Litter": categories["Pet Care"]
-    }
+    for household in households:
+        quantity = random.randint(1, 10)
+        add_count = random.randint(0, 20)
+        HouseholdItem.objects.create(household=household, item=item, quantity=quantity, add_count=add_count)
 
-    item_objects = {}
-    for name, category in items.items():
-        item_objects[name] = Item.objects.create(name=name, category=category)
-
-    # Create household items
-    HouseholdItem.objects.create(household=household1, item=item_objects["Apple"], quantity=5)
-    HouseholdItem.objects.create(household=household1, item=item_objects["Milk"], quantity=2)
-    HouseholdItem.objects.create(household=household1, item=item_objects["Chicken Breast"], quantity=3)
-    HouseholdItem.objects.create(household=household2, item=item_objects["Rice"], quantity=1)
-    HouseholdItem.objects.create(household=household2, item=item_objects["Cheese"], quantity=1)
-    HouseholdItem.objects.create(household=household2, item=item_objects["Ice Cream"], quantity=4)
-
-    print("Test data created successfully.")
-
-if __name__ == "__main__":
-    create_test_data()
+print("Test data created successfully.")

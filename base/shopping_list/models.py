@@ -26,6 +26,7 @@ class HouseholdItem(models.Model):
     household = models.ForeignKey(Household, related_name='household_items', on_delete=models.CASCADE)
     item = models.ForeignKey(Item, related_name='household_items', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    add_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.quantity} x {self.item.name} in {self.household.name}"

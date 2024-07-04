@@ -1,0 +1,49 @@
+<!-- shopping_list/templates/shopping_list/items_sorted_by_count.html -->
+{% extends 'shopping_list/base.html' %}
+
+{% block content %}
+<div class="container mt-4 mb-5" style="padding-bottom: 150px;">
+    <h1>{{ household.name }}</h1>
+    <h2>Items Sorted by Add Count</h2>
+    <canvas id="stackedBarChart" width="400" height="200"></canvas>
+    <div class="mt-4">
+        <a href="{% url 'household_detail' household.slug %}" class="btn btn-primary">Back to Household</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('stackedBarChart').getContext('2d');
+        const chartData = {{ chart_data|safe }};
+        
+        const datasets = chartData.items.map((item, index) => {
+            return {
+                label: item,
+                data: chartData.data[index],
+                backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.5)`,
+                borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+                borderWidth: 1
+            };
+        });
+
+        const stackedBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.categories,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
